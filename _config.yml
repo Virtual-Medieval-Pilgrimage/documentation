@@ -1,8 +1,30 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
-remote-theme: just-the-docs
-
-url: https://just-the-docs.github.io
+title: Virtual Medieval Pilgrimage Documentation
+description: A toolkit for creating a virtual-medieval-pilgrimage web site
+remote_theme: just-the-docs/just-the-docs
+url: https://vmp.kalanicraig.com/documentation
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
+
+aux_links:
+  VMP Home: https://vmp.kalanicraig.com/
+  VMP Template: https://github.com/Virtual-Medieval-Pilgrimage/pilgrimage-template
+
+color_scheme: light
+
+# URL will usually be blank. Entering something here allows you to control whether links use a full URL or not
+url: 
+# Base URL will be blank if the documentation is not in a subfolder of your web site. If the documentation will be in a folder (site.com/documentation/) instead of in its own main site (site.github.io) add that folder name here with a slash / in front of it (e.g. /docs) but not after.
+baseurl: /documentation
+# This lets you specify where most images are stored without having to manually type each image url. Use ""{{site.url}}{{site.baseurl}}/filename.html" to link to files and "{{site.url}}{{site.baseurl}}{{site.imageurl}}/imagename.jpg" to link to images.
+imageurl: /assets/images
+gifurl: /assets/videos
+
+#Github Repository
+repository: Virtual-Medieval-Pilgrimage/documentation
+
+#Search Configuration
+search_enabled: true
+search.heading_level: 2
+search.previews: 3
+search.rel_url: false
