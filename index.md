@@ -1,35 +1,131 @@
 ---
 title: Home
 layout: home
+nav_order: 1
 ---
 
-This is a *bare-minimum* template to create a Jekyll site that uses the [Just the Docs] theme. You can easily set the created site to be published on [GitHub Pages] – the [README] file explains how to do that, along with other details.
+# Virtual Medieval Pilgrimage Documentation
 
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^1] And you will be able to deploy your local build to a different platform than GitHub Pages.
+<!-- ================== TABLE OF CONTENTS ================== -->
+{%- assign collection_labels = site.collections | map: "label" -%}
+{%- if collection_labels contains "docs" -%}
+  {%- assign all_pages = site.collections["docs"].docs | where_exp: "d","d.output != false" -%}
+{%- else -%}
+  {%- assign all_pages = site.pages | where_exp: "d","d.output != false" -%}
+{%- endif -%}
 
-More specifically, the created site:
+{%- comment -%}
+Build a normalized list of ONLY docs/**/index.md pages, capturing:
+  depth  = 1|2|3  (# of folders between 'docs/' and 'index.md')
+  top    = first folder after docs/
+  second = second folder (if depth >= 2)
+  third  = third folder (if depth >= 3)
+  ord    = nav_order (default 999999)
+  url    = page.url
+  ttl    = page.title
+{%- endcomment -%}
+{%- assign normalized = "" -%}
+{%- for d in all_pages -%}
+  {%- if d.path contains 'docs/' and d.path contains '/index.md' -%}
+    {%- assign rel = d.path | remove_first: 'docs/' -%}
+    {%- assign parts = rel | split: '/' -%}
+    {%- assign parts_size = parts | size -%}
+    {%- assign depth = parts_size | minus: 1 -%}
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
+    {%- if depth >= 1 and depth <= 3 -%}
+      {%- assign top    = parts[0] -%}
+      {%- assign second = '' -%}
+      {%- assign third  = '' -%}
+      {%- if depth >= 2 -%}{%- assign second = parts[1] -%}{%- endif -%}
+      {%- if depth >= 3 -%}{%- assign third  = parts[2] -%}{%- endif -%}
+      {%- assign ord = d.nav_order | default: 999999 -%}
+      {%- capture row -%}{{ depth }}|||{{ top }}|||{{ second }}|||{{ third }}|||{{ ord }}|||{{ d.url }}|||{{ d.title | strip }}{%- endcapture -%}
+      {%- assign normalized = normalized | append: row | append: "~~" -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign rows = normalized | split: "~~" | reject: "" -%}
 
-Other than that, you're free to customize sites that you create with this template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
+{%- comment -%}
+Helpers to gather sorted groups
+{%- endcomment -%}
+{%- assign top_items = "" -%}
+{%- for r in rows -%}
+  {%- assign c = r | split: "|||" -%}
+  {%- if c[0] == '1' -%}
+    {%- assign top_items = top_items | append: c[4] | append: "@@" | append: r | append: "~~" -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign top_items = top_items | split: "~~" | reject: "" | sort_natural -%}
 
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
+<div class="toc">
+  <h2>Table of Contents</h2>
 
-To get started with creating a site, simply:
+  <ol>
+  {%- for ti in top_items -%}
+    {%- assign tb = ti | split: "@@" -%}
+    {%- assign trow = tb[1] -%}
+    {%- assign tcols = trow | split: "|||" -%}
+    {%- assign top_slug = tcols[1] -%}
+    {%- assign top_url  = tcols[5] -%}
+    {%- assign top_ttl  = tcols[6] -%}
+    <li>
+      <!-- TOP LEVEL LINKS TO PAGE URL -->
+      <a href="{{ top_url | relative_url }}">{{ top_ttl }}</a>
 
-1. click "[use this template]" to create a GitHub repository
-2. go to Settings > Pages > Build and deployment > Source, and select GitHub Actions
+      {%- comment -%} Gather second-level index pages under this top folder {%- endcomment -%}
+      {%- assign seconds = "" -%}
+      {%- for r in rows -%}
+        {%- assign c = r | split: "|||" -%}
+        {%- if c[0] == '2' and c[1] == top_slug -%}
+          {%- assign seconds = seconds | append: c[4] | append: "@@" | append: r | append: "~~" -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- assign seconds = seconds | split: "~~" | reject: "" | sort_natural -%}
 
-If you want to maintain your docs in the `docs` directory of an existing project repo, see [Hosting your docs from an existing project repo](https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md#hosting-your-docs-from-an-existing-project-repo) in the template README.
+      {%- if seconds != empty -%}
+      <ul>
+        {%- for si in seconds -%}
+          {%- assign sb = si | split: "@@" -%}
+          {%- assign srow = sb[1] -%}
+          {%- assign sc = srow | split: "|||" -%}
+          {%- assign sec_slug = sc[2] -%}
+          {%- assign sec_url  = sc[5] -%}
+          {%- assign sec_ttl  = sc[6] -%}
+          <li>
+            <!-- SECOND LEVEL LINKS TO PAGE URL -->
+            <a href="{{ sec_url | relative_url }}">{{ sec_ttl }}</a>
 
-----
+            {%- comment -%} Third-level index pages under this second folder {%- endcomment -%}
+            {%- assign thirds = "" -%}
+            {%- for r3 in rows -%}
+              {%- assign c3 = r3 | split: "|||" -%}
+              {%- if c3[0] == '3' and c3[1] == top_slug and c3[2] == sec_slug -%}
+                {%- assign thirds = thirds | append: c3[4] | append: "@@" | append: r3 | append: "~~" -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- assign thirds = thirds | split: "~~" | reject: "" | sort_natural -%}
 
-[^1]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
+            {%- if thirds != empty -%}
+            <ul>
+              {%- for th in thirds -%}
+                {%- assign tb3 = th | split: "@@" -%}
+                {%- assign trow3 = tb3[1] -%}
+                {%- assign tc3 = trow3 | split: "|||" -%}
+                {%- assign third_url = tc3[5] -%}
+                {%- assign third_ttl = tc3[6] -%}
+                <!-- THIRD LEVEL LINKS TO PAGE URL -->
+                <li><a href="{{ third_url | relative_url }}">{{ third_ttl }}</a></li>
+              {%- endfor -%}
+            </ul>
+            {%- endif -%}
 
-[Just the Docs]: https://just-the-docs.github.io/just-the-docs/
-[GitHub Pages]: https://docs.github.com/en/pages
-[README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
-[Jekyll]: https://jekyllrb.com
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+  </ol>
+</div>
+
