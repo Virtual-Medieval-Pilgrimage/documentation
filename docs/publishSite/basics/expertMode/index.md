@@ -17,7 +17,7 @@ If you get stuck anywhere, the "Setting Up Your Site" and "Troubleshooting" sect
 
 **Create a new Github.com account by following the directions [here](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)**
 
-1. Your Github username should be the name people will search for to find your community. For instance, a community group called "New City Community Archive" would choose the username "newcitycommunityarchive"
+1. Your Github username should be the name people will search for to find your pilgrimage. For instance, a community group called "New City Pilgrimage" would choose the username "newcitypilgrimage"
 2. The "free" option will mean people can see, but not edit, the files that run your web site.
 
 ## Step 2: Create a project inside your new account 
@@ -25,10 +25,10 @@ If you get stuck anywhere, the "Setting Up Your Site" and "Troubleshooting" sect
 
 <!--**Make a copy of our template community-archive site by following this video: [https://youtu.be/aDQZ1lcpMn0](https://youtu.be/aDQZ1lcpMn0){:target="_blank"}**-->
 
-1. Visit [`https://github.com/DigitalArcPlatform/template`](https://github.com/DigitalArcPlatform/template)
+1. Visit [`https://github.com/Virtual-Medieval-Pilgrimage/pilgrimage-template`](https://github.com/Virtual-Medieval-Pilgrimage/pilgrimage-template)
 1. Press the "Use this template" button
 1. Choose "Create a new repository"
-1. Name your repository `yourusername.github.io` (where *yourusername* is the username you chose when you created your Github account). In our example, where the username is `newcitycommunityarchive`, you would name your repository `newcitycommunityarchive.github.io`.
+1. Name your repository `yourusername.github.io` (where *yourusername* is the username you chose when you created your Github account). In our example, where the username is `newcitypilgrimage`, you would name your repository `newcitypilgrimage.github.io`.
 1. Set the new repository to be Public. *This doesn't mean everyone who sees your files can edit them.* It means that people can see both the pretty version of your website and the files that Github uses to build the pretty web site, but *only you or the people you give your log-in to can make changes.*
 
 ## Step 3: Configure the look and feel of your new project
@@ -38,12 +38,12 @@ If you get stuck anywhere, the "Setting Up Your Site" and "Troubleshooting" sect
 
 The `_config.yml` file contains settings for exhibit info, font, and color choices that affect the entire web site.
 
-1. Gather information about your community, that includes
+1. Gather information about your pilgrimage, that includes
 	- What you want to call the site
 	- Who the main contact person will be
 	- How do you want your site to look?
 		- [Choose your fonts and colors from a preset list]({{ site.baseurl }}/docs/publishSite/basics/typefaceColor/)
-1. Put these pieces of community info into our "Configuration File Generator" at [https://digitalarcplatform.kalanicraig.com/MakeConfigFile/](https://digitalarcplatform.kalanicraig.com/MakeConfigFile/)
+1. Put these pieces of community info into our "Configuration File Generator" at [https://vmp.kalanicraig.com/MakeConfigFile/](https://vmp.kalanicraig.com/MakeConfigFile/)
 
 Once you've downloaded your config file:
 1. Find the "Code" navigation tab in your new Github repository.
@@ -57,18 +57,16 @@ Once you've downloaded your config file:
 1. Scroll down and look for the green "commit" button. Press it to save your configuration file.
 1. Press the green "Commit" button on the pop-up screen.
 
-## Step 4: Create an item to display
+## Step 4: Customize Each Pilgrimage
 {: .subheadline }
 
 <!--**Add your first item by following this video: [https://youtu.be/LoFCewSXC7c](https://youtu.be/LoFCewSXC7c){:target="_blank"}**-->
 
-Each item in the collection has an item ID (no spaces or punctuation) with one or more files associated with it (e.g. `0001.md`).
+Each item in the pilgrimage has a file associated with it in the `_items` folder.
 
 1. Open the `_items` folder and look at one of the example items. Get a feel for what you need to gather about each item.
-2. Each item should have its own unique filename.
-   - We like `YYYY-MM-DD-ItemNo` (so the 4th item collected on May 15, 2022, would be `2022-05-15-004`)
-3. Each item will have its own information file in the `_items` folder (2022-05-15-004.md) and a photo in the `/assets/items/` folder (2022-05-15-004.jpg or 2022-05-15-004.png).
-  - The file for each item in the `_items` folder has a bunch of information about each item in the first few lines. Each line has a field type (e.g. `author`), and then a colon, and then the info that goes in that field surrounded by double quotes (`author: "Drew H"`). You can get more information about what goes in these item fields in the [Metadata: Line by Line]({{ site.baseurl }}/postEvent/metadata/) section of this documentation.
+1. Each pilgrimage should have its own unique filename.
+1. Each pilgrimage will have information at the beginning of the file that you can edit to fit your local pilgrimage.
 
 ## Step 5: Set up your project to publish to the web
 {: .subheadline }

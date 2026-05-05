@@ -8,7 +8,7 @@ has_children: true
 
 # What will we do in this section?
 
-Creating a community-archive web site has lots of technical steps.
+Creating a web site using Github Pages has a few technical steps.
 
 This section covers the individual steps you'll need to take to
 - Create a Github account
